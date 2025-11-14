@@ -6,17 +6,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "t_arp_users")
+@Table(name = "T_ARP_USERS")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +36,7 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column(length = 100)
@@ -41,7 +46,7 @@ public class Usuario {
     private LocalDateTime dataAdmissao = LocalDateTime.now();
 
     @Column(nullable = false)
-    private Boolean ativo = true;
+    private Boolean ativo;
 
     @ManyToOne
     @JoinColumn(name = "id_equipe")
@@ -58,4 +63,20 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RelatorioPessoa> relatoriosPessoa;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.toString()));
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
 }

@@ -22,6 +22,7 @@ public class Sentimento {
     private Long id;
 
     @Column(name = "nome_sentimento", nullable = false, length = 100)
+    @Enumerated(EnumType.STRING)
     private TipoSentimento nomeSentimento;
 
     @Column(name = "valor_pontuacao")
