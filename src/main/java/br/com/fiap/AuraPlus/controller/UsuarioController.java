@@ -6,6 +6,7 @@ import br.com.fiap.AuraPlus.model.Usuario;
 import br.com.fiap.AuraPlus.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +27,7 @@ public class UsuarioController {
     @Operation(
             summary = "Endpoint para criar um novo usuário"
     )
-    public ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody final CadastroUserDto cadastroUserDto) {
+    public ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody @Valid final CadastroUserDto cadastroUserDto) {
         final Usuario operadorCriado = usuarioService.salvarUsuario(cadastroUserDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioResponse.from(operadorCriado));
     }
@@ -35,7 +36,7 @@ public class UsuarioController {
     @Operation(
             summary = "Endpoint para atualizar o próprio usuário"
     )
-    public ResponseEntity<UsuarioResponse> atualizarUsuario(@RequestBody final CadastroUserDto cadastroUserDto,
+    public ResponseEntity<UsuarioResponse> atualizarUsuario(@RequestBody @Valid final CadastroUserDto cadastroUserDto,
                                                             @AuthenticationPrincipal final Usuario usuario) {
         final Usuario usuarioAtualizado = usuarioService.atualizarUsuario(cadastroUserDto, usuario);
         return ResponseEntity.ok(UsuarioResponse.from(usuarioAtualizado));

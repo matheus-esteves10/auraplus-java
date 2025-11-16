@@ -1,6 +1,5 @@
 package br.com.fiap.AuraPlus.service.auth;
 
-import br.com.fiap.AuraPlus.exceptions.UsuarioNotFoundException;
 import br.com.fiap.AuraPlus.repositories.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +17,6 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepository.findByEmail(username).orElseThrow(
-                UsuarioNotFoundException::new);
+        return usuarioRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }
