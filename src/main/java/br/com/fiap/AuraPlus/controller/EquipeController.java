@@ -67,7 +67,7 @@ public class EquipeController {
     )
     public ResponseEntity<Void> removerUsuario(@PathVariable Long idRemover, @AuthenticationPrincipal final Usuario usuarioLogado) {
 
-        equipeService.removerUsuario(idRemover, usuarioLogado.getEquipe().getId());
+        equipeService.removerUsuario(idRemover, usuarioLogado);
         return ResponseEntity.noContent().build();
     }
 

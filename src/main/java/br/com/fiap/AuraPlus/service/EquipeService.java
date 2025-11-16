@@ -10,10 +10,12 @@ import br.com.fiap.AuraPlus.exceptions.UserWithoutTeamException;
 import br.com.fiap.AuraPlus.exceptions.UsuarioNotFoundException;
 import br.com.fiap.AuraPlus.model.Equipe;
 import br.com.fiap.AuraPlus.model.Usuario;
+import br.com.fiap.AuraPlus.model.enums.Role;
 import br.com.fiap.AuraPlus.repositories.EquipeRepository;
 import br.com.fiap.AuraPlus.repositories.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,12 +84,17 @@ public class EquipeService {
     }
 
     @Transactional
-    public void removerUsuario(final Long idUserRemover, final Long idEquipe) {
-        final Equipe equipe = findEquipeById(idEquipe);
-        final Usuario usuario = usuarioRepository.findById(idUserRemover).orElseThrow(UsuarioNotFoundException::new);
+    public void removerUsuario(final Long idUserRemover, final Usuario usuarioLogado) {
+        final Equipe equipe = findEquipeById(usuarioLogado.getEquipe().getId());
+        final Usuario usuarioRemocao = usuarioRepository.findById(idUserRemover).orElseThrow(UsuarioNotFoundException::new);
 
-        equipe.removerUsuario(usuario);
-        usuarioRepository.save(usuario);
+        if (usuarioLogado.getRole() == Role.GESTOR
+                && usuarioRemocao.getRole() == Role.ADMIN) {
+            throw new AuthorizationDeniedException("Um GESTOR não pode remover um ADMIN da equipe.");
+        }
+
+        equipe.removerUsuario(usuarioRemocao);
+        usuarioRepository.save(usuarioRemocao);
 
         //todo: enviar email notificando que foi removido da equipe
     }
