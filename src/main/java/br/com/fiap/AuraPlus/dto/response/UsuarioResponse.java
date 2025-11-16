@@ -8,7 +8,8 @@ public record UsuarioResponse(
         String nome,
         String email,
         Role role,
-        Boolean ativo
+        Boolean ativo,
+        String cargo
 ) {
     public static UsuarioResponse from(Usuario usuario) {
         return new UsuarioResponse(
@@ -16,7 +17,8 @@ public record UsuarioResponse(
                 usuario.getNome(),
                 usuario.getEmail(),
                 usuario.getRole(),
-                usuario.getAtivo()
+                usuario.getAtivo(),
+                usuario.getCargo()
         );
     }
 }

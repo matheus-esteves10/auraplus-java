@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,5 +59,16 @@ public class UsuarioController {
     public ResponseEntity<Void> excluirUsuario(@AuthenticationPrincipal final Usuario usuario) {
         usuarioService.excluirUsuario(usuario);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("role/{idUser}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
+    @Operation(
+            summary = "Endpoint para alterar role de um usuário",
+            description = "Se gestor usarário se torna colaborador e vice-versa (necessário estar em uma equipe)"
+    )
+    public ResponseEntity<UsuarioResponse> alterarRole(@PathVariable Long idUser) {
+        final Usuario usuarioAtualizado = usuarioService.alterarRole(idUser);
+        return ResponseEntity.ok(UsuarioResponse.from(usuarioAtualizado));
     }
 }

@@ -1,6 +1,8 @@
 package br.com.fiap.AuraPlus.service;
 
 import br.com.fiap.AuraPlus.dto.request.CadastroUserDto;
+import br.com.fiap.AuraPlus.exceptions.UserWithoutTeamException;
+import br.com.fiap.AuraPlus.exceptions.UsuarioNotFoundException;
 import br.com.fiap.AuraPlus.model.Usuario;
 import br.com.fiap.AuraPlus.model.enums.Role;
 import br.com.fiap.AuraPlus.repositories.UsuarioRepository;
@@ -50,5 +52,21 @@ public class UsuarioService {
         usuario.setDataAdmissao(null);
 
         usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public Usuario alterarRole(final Long idUser) {
+        final Usuario usuario = usuarioRepository.findById(idUser)
+                .orElseThrow(UsuarioNotFoundException::new);
+
+        if (usuario.getRole() == Role.NOVO_USUARIO) {
+            throw new UserWithoutTeamException(usuario.getEmail());
+        }
+
+        usuario.setRole(
+                usuario.getRole() == Role.GESTOR ? Role.COLABORADOR : Role.GESTOR
+        );
+
+        return usuarioRepository.save(usuario);
     }
 }
