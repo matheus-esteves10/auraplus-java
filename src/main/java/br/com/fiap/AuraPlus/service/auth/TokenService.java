@@ -34,7 +34,7 @@ public class TokenService {
         this.usuarioRepository = usuarioRepository;
     }
 
-        public String createToken(final Usuario user) {
+    public String createToken(final Usuario user) {
         Instant expiresAt = LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.ofHours(-3));
 
         return JWT.create()

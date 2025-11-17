@@ -37,4 +37,23 @@ public class Sentimento {
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
+
+    private static int calcularPontuacao(final TipoSentimento tipo) {
+        return switch (tipo) {
+            case MUITO_TRISTE -> 1;
+            case TRISTE -> 2;
+            case NEUTRO -> 3;
+            case FELIZ -> 4;
+            case MUITO_FELIZ -> 5;
+        };
+    }
+
+    public static Sentimento of(final TipoSentimento tipo, final String descricao) {
+        return Sentimento.builder()
+                .nomeSentimento(tipo)
+                .descricao(descricao)
+                .valorPontuacao(calcularPontuacao(tipo))
+                .data(LocalDateTime.now())
+                .build();
+    }
 }
