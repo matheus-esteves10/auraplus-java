@@ -3,7 +3,6 @@ package br.com.fiap.AuraPlus.service;
 import br.com.fiap.AuraPlus.dto.request.CadastroReconhecimentoDto;
 import br.com.fiap.AuraPlus.dto.response.ReconhecimentoResponseDto;
 import br.com.fiap.AuraPlus.exceptions.AlreadyRecognizedThisMonthException;
-import br.com.fiap.AuraPlus.exceptions.CannotAutoRecognitionException;
 import br.com.fiap.AuraPlus.exceptions.UsuarioNotFoundException;
 import br.com.fiap.AuraPlus.model.Reconhecimento;
 import br.com.fiap.AuraPlus.model.Usuario;
@@ -68,6 +67,4 @@ public class ReconhecimentoService {
                 inicioProximoMes
         );
     }
-
-
 }
