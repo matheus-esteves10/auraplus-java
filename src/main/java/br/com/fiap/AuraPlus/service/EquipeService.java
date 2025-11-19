@@ -3,6 +3,7 @@ package br.com.fiap.AuraPlus.service;
 import br.com.fiap.AuraPlus.dto.request.CadastroEquipeDto;
 import br.com.fiap.AuraPlus.dto.request.UsuarioEquipeRequest;
 import br.com.fiap.AuraPlus.dto.response.CadastrarNaEquipeResponse;
+import br.com.fiap.AuraPlus.dto.response.PageableEquipeResponse;
 import br.com.fiap.AuraPlus.dto.response.UsuarioEquipeResponse;
 import br.com.fiap.AuraPlus.exceptions.EquipeNotFoundException;
 import br.com.fiap.AuraPlus.exceptions.UserAlreadyInTeamException;
@@ -99,7 +100,10 @@ public class EquipeService {
         //todo: enviar email notificando que foi removido da equipe
     }
 
-    public Page<UsuarioEquipeResponse> listarUsuariosDaEquipe(final Usuario usuarioLogado, final Pageable pageable) {
+    public PageableEquipeResponse listarUsuariosDaEquipe(
+            final Usuario usuarioLogado,
+            final Pageable pageable
+    ) {
 
         if (usuarioLogado.getEquipe() == null) {
             throw new UserWithoutTeamException(usuarioLogado.getEmail());
@@ -110,7 +114,13 @@ public class EquipeService {
                 pageable
         );
 
-        return page.map(this::toResponse);
+        Page<UsuarioEquipeResponse> usuariosPage = page.map(UsuarioEquipeResponse::from);
+
+        return new PageableEquipeResponse(
+                usuarioLogado.getEquipe().getNomeTime(),
+                usuarioLogado.getEquipe().getDescricao(),
+                usuariosPage
+        );
     }
 
     // -------------------------

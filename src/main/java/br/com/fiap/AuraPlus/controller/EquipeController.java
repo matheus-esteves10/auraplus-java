@@ -4,6 +4,7 @@ import br.com.fiap.AuraPlus.dto.request.CadastroEquipeDto;
 import br.com.fiap.AuraPlus.dto.request.UsuarioEquipeRequest;
 import br.com.fiap.AuraPlus.dto.response.CadastrarNaEquipeResponse;
 import br.com.fiap.AuraPlus.dto.response.EquipeResponse;
+import br.com.fiap.AuraPlus.dto.response.PageableEquipeResponse;
 import br.com.fiap.AuraPlus.dto.response.UsuarioEquipeResponse;
 import br.com.fiap.AuraPlus.model.Equipe;
 import br.com.fiap.AuraPlus.model.Usuario;
@@ -76,9 +77,9 @@ public class EquipeController {
     @Operation(
             summary = "Lista os usuários da equipe do usuário logado (paginado)"
     )
-    public ResponseEntity<Page<UsuarioEquipeResponse>> listarUsuarios(@AuthenticationPrincipal final Usuario usuarioLogado,
-                                                                      final Pageable pageable) {
-        final Page<UsuarioEquipeResponse> page =
+    public ResponseEntity<PageableEquipeResponse> listarUsuarios(@AuthenticationPrincipal final Usuario usuarioLogado,
+                                                                       final Pageable pageable) {
+        final PageableEquipeResponse page =
                 equipeService.listarUsuariosDaEquipe(usuarioLogado, pageable);
 
         return ResponseEntity.ok(page);
