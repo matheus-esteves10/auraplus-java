@@ -118,7 +118,7 @@ public class EquipeService {
     // -------------------------
 
     private UsuarioEquipeResponse toResponse(Usuario usuario) {
-        return new UsuarioEquipeResponse(usuario.getId(), usuario.getEmail(), usuario.getCargo());
+        return new UsuarioEquipeResponse(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getCargo());
     }
 
     private Map<String, Usuario> carregarUsuariosPorEmail(final Set<UsuarioEquipeRequest> usuariosReq) {
