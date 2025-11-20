@@ -2,31 +2,29 @@ package br.com.fiap.AuraPlus.service;
 
 import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioEquipeDto;
 import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioPessoaDto;
-import groq4j.builders.ChatCompletionRequestBuilder;
-import groq4j.services.ChatServiceImpl;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IaService {
 
-    @Value("${spring.ai.openai.api-key}")
-    private String groqAiApiKey;
+    private final ChatClient chatClient;
 
-    @Value("${spring.ai.openai.chat.options.model}")
-    private String model;
-
-    @Value("${spring.ai.openai.chat.options.temperature}")
-    private String temperature;
+    @Autowired
+    public IaService(ChatClient.Builder builder) {
+        this.chatClient = builder.build();
+    }
 
     public String processarRelatorioPessoa(final RelatorioPessoaDto dto) {
-
-        var chatService = ChatServiceImpl.create(groqAiApiKey);
 
         var prompt = """
                 Você é um assistente especializado em análise de clima organizacional.
                 Gere um relatório motivacional, humano e profissional sobre um colaborador,
-                baseado nos dados abaixo.
+                baseado nos dados abaixo. O relátorio não deve ser muito longo, mas deve ser completo e
+                abordar os principais pontos. Ele deve ser mandado em uma estrutura pronta para salvar no banco de dados já, 
+                o seu relatório será enviado diretamente para o colaborador.
                 
                 Dados fornecidos:
                 - Número de reconhecimentos recebidos: %d
@@ -46,10 +44,11 @@ public class IaService {
                 dto.titulos(),
                 dto.descritivo());
 
-        var response = chatService.simple(model, prompt);
+        String response = chatClient.prompt().user(prompt).call().content();
+        System.out.println(response);
 
-        System.out.println(response.choices().getFirst().message().content().orElse("")); // veja o que veio
-        return response.choices().getFirst().message().content().orElse("");
+        // veja o que veio
+        return response;
     }
 
     public String processarRelatorioEquipe(RelatorioEquipeDto dto) {

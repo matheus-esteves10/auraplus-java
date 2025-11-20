@@ -14,11 +14,11 @@ public class RelatorioScheduler {
         this.envioRelatoriosService = envioRelatoriosService;
     }
 
-    @PostConstruct
-    public void executarAoIniciar() { //método para testar os jobs (roda ao iniciar a aplicação)
-        gerarRelatorioEquipes();
-        gerarRelatorioUsuarios();
-    }
+//    @PostConstruct
+//    public void executarAoIniciar() { //método para testar os jobs (roda ao iniciar a aplicação)
+//        gerarRelatorioEquipes();
+//        gerarRelatorioUsuarios();
+//    }
 
 
     // Dia 1 - 02:00 da manhã
