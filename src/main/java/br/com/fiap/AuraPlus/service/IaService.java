@@ -32,12 +32,13 @@ public class IaService {
                 - Identifique padrões (ex.: colaboração, comunicação, liderança).
                 - Use tom acolhedor e motivacional, sem exageros.
                 - Gere um texto final direto, adequado para envio ao colaborador.
-                - Não mencione números específicos nem detalhes que possam identificar quem fez as indicações.
+                - Fale sobre os pontos fortes e áreas de destaque.
                 
                 Regra obrigatória:
                 - O resultado deve ser texto contínuo, natural e humano.
                 - Nunca retorne números soltos como “0.123” ou qualquer valor isolado.
                 - Não retorne listas numéricas.
+                -Não divida o texto em titulos ou tópicos. Deverá ser um texto corrido com paragrafos.
                 """.formatted(
                 dto.numeroIndicacoes(),
                 dto.titulos(),
@@ -70,6 +71,7 @@ public class IaService {
                 Regra obrigatória:
                 - O resultado deve ser texto contínuo, natural e humano.
                 - Não retorne números soltos, códigos, listas ou valores como “0.123”.
+                -Não divida o texto em titulos ou tópicos. Deverá ser um texto corrido com paragrafos.
                 """.formatted(
                 dto.nomeEquipe(),
                 dto.mediaSentimentos(),

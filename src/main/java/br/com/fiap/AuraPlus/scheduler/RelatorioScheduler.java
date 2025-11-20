@@ -16,7 +16,7 @@ public class RelatorioScheduler {
 
 //    @PostConstruct
 //    public void executarAoIniciar() { //método para testar os jobs (roda ao iniciar a aplicação)
-//        gerarRelatorioEquipes();
+//        //gerarRelatorioEquipes();
 //        //gerarRelatorioUsuarios();
 //    }
 

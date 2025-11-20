@@ -24,7 +24,7 @@ public class RelatorioPessoaConsumer {
         relatorioUsuarioService.saveRelatorioUsuario(dto, retornoIa);
 
         try {
-            Thread.sleep(25_000);
+            Thread.sleep(15_000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

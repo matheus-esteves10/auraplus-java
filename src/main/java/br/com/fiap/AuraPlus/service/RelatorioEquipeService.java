@@ -1,7 +1,7 @@
 package br.com.fiap.AuraPlus.service;
 
 import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioEquipeDto;
-import br.com.fiap.AuraPlus.dto.response.RelatorioLeituraDto;
+import br.com.fiap.AuraPlus.dto.response.RelatorioEquipeLeituraDto;
 import br.com.fiap.AuraPlus.exceptions.RelatorioEquipeNotFoundException;
 import br.com.fiap.AuraPlus.model.Equipe;
 import br.com.fiap.AuraPlus.model.RelatorioEquipe;
@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.format.TextStyle;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 public class RelatorioEquipeService {
@@ -41,12 +40,12 @@ public class RelatorioEquipeService {
     }
 
     @Transactional(readOnly = true)
-    public RelatorioLeituraDto getRelatorioByEquipeAndMes(Long equipeId, int mes, int ano) {
+    public RelatorioEquipeLeituraDto getRelatorioByEquipeAndMes(final Long equipeId, final int mes, final int ano) {
 
-        RelatorioEquipe relatorio = relatorioEquipeRepository.findByEquipeAndMes(equipeId, mes, ano)
+        final RelatorioEquipe relatorio = relatorioEquipeRepository.findByEquipeAndMes(equipeId, mes, ano)
                 .orElseThrow(() -> new RelatorioEquipeNotFoundException(mes, ano));
 
-        return new RelatorioLeituraDto(
+        return new RelatorioEquipeLeituraDto(
                 relatorio.getData().getMonth().getDisplayName(TextStyle.FULL, new Locale("pt", "BR")).toUpperCase(),
                 Year.of(relatorio.getData().getYear()),
                 relatorio.getEquipe().getNomeTime(),
