@@ -8,6 +8,7 @@ import br.com.fiap.AuraPlus.model.RelatorioPessoa;
 import br.com.fiap.AuraPlus.model.Usuario;
 import br.com.fiap.AuraPlus.repositories.RelatorioPessoaRepository;
 import br.com.fiap.AuraPlus.repositories.UsuarioRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,7 @@ public class RelatorioUsuarioService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "relatoriosEquipe", key = "#usuarioId + '-' + #mes + '-' + #ano")
     public RelatorioUsuarioLeituraDto getRelatorioByUsuarioId(final Long usuarioId, final Integer mes, final Integer ano) {
         final RelatorioPessoa relatorio = relatorioPessoaRepository.findByUserAndMes(usuarioId, mes, ano)
                 .orElseThrow(() -> new RelatorioUsuarioNotFoundException(mes, ano));
