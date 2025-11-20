@@ -1,5 +1,6 @@
 package br.com.fiap.AuraPlus.service;
 
+import br.com.fiap.AuraPlus.dto.FuncionarioDoMesDto;
 import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioPessoaDto;
 import br.com.fiap.AuraPlus.dto.response.RelatorioUsuarioLeituraDto;
 import br.com.fiap.AuraPlus.exceptions.RelatorioUsuarioNotFoundException;
@@ -12,9 +13,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -54,5 +57,33 @@ public class RelatorioUsuarioService {
                 relatorio.getData().getMonth().getDisplayName(TextStyle.FULL, new Locale("pt", "BR")).toUpperCase(),
                 Year.of(relatorio.getData().getYear())
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<FuncionarioDoMesDto> getFuncionariosDoMesPorEquipe(final Long equipeId) {
+
+        final LocalDate mesAnterior = LocalDate.now().minusMonths(1);
+        final int mes = mesAnterior.getMonthValue();
+        final int ano = mesAnterior.getYear();
+
+        final Integer maxIndicacoes = relatorioPessoaRepository
+                .findMaxIndicacoesByMesAnoAndEquipe(mes, ano, equipeId);
+
+        if (maxIndicacoes == null || maxIndicacoes == 0) {
+            throw new RelatorioUsuarioNotFoundException(mes, ano);
+        }
+
+        final List<RelatorioPessoa> relatorios =
+                relatorioPessoaRepository.findAllByMesAnoEquipeAndIndicacoes(mes, ano, equipeId, maxIndicacoes);
+
+        return relatorios.stream()
+                .map(r -> new FuncionarioDoMesDto(
+                        r.getUsuario().getNome(),
+                        r.getNumeroIndicacoes(),
+                        r.getUsuario().getCargo(),
+                        r.getUsuario().getEquipe().getNomeTime(),
+                        r.getDescritivo()
+                ))
+                .toList();
     }
 }

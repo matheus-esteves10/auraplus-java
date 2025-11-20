@@ -1,5 +1,6 @@
 package br.com.fiap.AuraPlus.controller;
 
+import br.com.fiap.AuraPlus.dto.FuncionarioDoMesDto;
 import br.com.fiap.AuraPlus.dto.response.RelatorioUsuarioLeituraDto;
 import br.com.fiap.AuraPlus.model.Usuario;
 import br.com.fiap.AuraPlus.service.RelatorioUsuarioService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/relatorios/usuario")
@@ -40,4 +42,16 @@ public class RelatorioUsuarioController {
         RelatorioUsuarioLeituraDto relatorio = relatorioUsuarioService.getRelatorioByUsuarioId(usuario.getId(), mesFiltro, anoFiltro);
         return ResponseEntity.ok(relatorio);
     }
+
+    @Operation(
+            summary = "Obter Funcionário do Mês da equipe",
+            description = "Retorna o usuário com maior número de indicações no mês anterior, considerando apenas a equipe do usuário logado."
+    )
+    @GetMapping("/funcionario-do-mes")
+    public ResponseEntity<List<FuncionarioDoMesDto>> getFuncionarioDoMes(@AuthenticationPrincipal Usuario usuario) {
+        final List<FuncionarioDoMesDto> dto = relatorioUsuarioService.getFuncionariosDoMesPorEquipe(usuario.getEquipe().getId());
+
+        return ResponseEntity.ok(dto);
+    }
 }
+

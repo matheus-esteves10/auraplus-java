@@ -35,10 +35,12 @@ public class IaService {
                 - Fale sobre os pontos fortes e áreas de destaque.
                 
                 Regra obrigatória:
+                -O relatório deve focar exclusivamente no colaborador, sem mencionar a empresa ou equipe.
                 - O resultado deve ser texto contínuo, natural e humano.
                 - Nunca retorne números soltos como “0.123” ou qualquer valor isolado.
                 - Não retorne listas numéricas.
                 -Não divida o texto em titulos ou tópicos. Deverá ser um texto corrido com paragrafos.
+                -Não inclua no texto campos como [Seu nome], [Cargo],[Data] ou qualquer coisa entre [].
                 """.formatted(
                 dto.numeroIndicacoes(),
                 dto.titulos(),
@@ -70,8 +72,10 @@ public class IaService {
                 
                 Regra obrigatória:
                 - O resultado deve ser texto contínuo, natural e humano.
+                -O relatório deve ser focado na equipe como um todo, sem mencionar indivíduos.
                 - Não retorne números soltos, códigos, listas ou valores como “0.123”.
                 -Não divida o texto em titulos ou tópicos. Deverá ser um texto corrido com paragrafos.
+                -Não inclua no texto campos como [Seu nome], [Cargo],[Data] ou qualquer coisa entre [].
                 """.formatted(
                 dto.nomeEquipe(),
                 dto.mediaSentimentos(),
