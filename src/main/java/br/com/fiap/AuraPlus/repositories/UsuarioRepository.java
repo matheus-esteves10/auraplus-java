@@ -15,5 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Page<Usuario> findByEquipeId(Long equipeId, Pageable pageable);
 
+    List<Usuario> findByEquipeId(Long equipeId);
+
     List<Usuario> findAllByEmailIn(Set<String> emails);
 }
