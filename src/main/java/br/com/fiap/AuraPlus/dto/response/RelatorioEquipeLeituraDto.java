@@ -6,5 +6,6 @@ public record RelatorioEquipeLeituraDto(String mesReferente,
                                         Year anoReferente,
                                         String nomeEquipe,
                                         String sentimentoMedio,
-                                        String descritivo) {
+                                        String descritivo,
+                                        Integer totalReports) {
 }

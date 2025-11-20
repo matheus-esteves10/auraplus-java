@@ -30,6 +30,9 @@ public class RelatorioEquipe {
     @Column(columnDefinition = "TEXT")
     private String descritivo;
 
+    @Column
+    private Integer totalReportsMes;
+
     @ManyToOne
     @JoinColumn(name = "id_equipe", nullable = false)
     private Equipe equipe;

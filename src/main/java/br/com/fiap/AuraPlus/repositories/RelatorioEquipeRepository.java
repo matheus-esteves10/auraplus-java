@@ -18,4 +18,14 @@ public interface RelatorioEquipeRepository extends JpaRepository<RelatorioEquipe
             @Param("mes") int mes,
             @Param("ano") int ano
     );
+
+    @Query("SELECT COUNT(r) FROM RelatorioEquipe r " +
+            "WHERE r.equipe.id = :equipeId " +
+            "AND MONTH(r.data) = :mes " +
+            "AND YEAR(r.data) = :ano")
+    Integer countReportsByEquipeAndMes(
+            @Param("equipeId") Long equipeId,
+            @Param("mes") int mes,
+            @Param("ano") int ano
+    );
 }

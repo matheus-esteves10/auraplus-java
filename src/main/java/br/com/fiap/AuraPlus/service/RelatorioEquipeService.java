@@ -7,7 +7,6 @@ import br.com.fiap.AuraPlus.model.Equipe;
 import br.com.fiap.AuraPlus.model.RelatorioEquipe;
 import br.com.fiap.AuraPlus.repositories.EquipeRepository;
 import br.com.fiap.AuraPlus.repositories.RelatorioEquipeRepository;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +36,7 @@ public class RelatorioEquipeService {
         relatorioEquipe.setEquipe(equipe);
         relatorioEquipe.setSentimentoMedio(dto.modaSentimento().name());
         relatorioEquipe.setDescritivo(retornoIa);
+        relatorioEquipe.setTotalReportsMes(dto.totalReports());
 
         relatorioEquipeRepository.saveAndFlush(relatorioEquipe);
     }
@@ -53,7 +53,8 @@ public class RelatorioEquipeService {
                 Year.of(relatorio.getData().getYear()),
                 relatorio.getEquipe().getNomeTime(),
                 relatorio.getSentimentoMedio(),
-                relatorio.getDescritivo()
+                relatorio.getDescritivo(),
+                relatorio.getTotalReportsMes()
         );
     }
 }
