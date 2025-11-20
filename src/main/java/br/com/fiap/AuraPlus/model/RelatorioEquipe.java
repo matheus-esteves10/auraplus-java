@@ -27,7 +27,7 @@ public class RelatorioEquipe {
     private String sentimentoMedio;
 
     @Lob
-    @Column()
+    @Column(columnDefinition = "TEXT")
     private String descritivo;
 
     @ManyToOne

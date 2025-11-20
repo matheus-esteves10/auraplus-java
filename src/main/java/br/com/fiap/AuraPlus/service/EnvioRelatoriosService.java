@@ -78,7 +78,6 @@ public class EnvioRelatoriosService {
                 .descritivo(descritivo)
                 .build();
 
-        System.out.println(dto.toString());
         pessoaProducer.publishMessage(dto);
     }
 
@@ -96,12 +95,17 @@ public class EnvioRelatoriosService {
 
     private void processarRelatorioEquipe(Equipe equipe, PeriodoMensal periodo) {
 
+
         final List<Sentimento> sentimentosEquipe =
                 sentimentoRepository.sentimentosDoMesPorEquipe(
                         equipe.getId(),
                         periodo.inicio(),
                         periodo.fim()
                 );
+
+        if (sentimentosEquipe.isEmpty()) {
+            return;
+        }
 
 
         final double mediaEquipe = sentimentosEquipe.stream()
@@ -134,14 +138,13 @@ public class EnvioRelatoriosService {
 
         final RelatorioEquipeDto dto = RelatorioEquipeDto.builder()
                 .idEquipe(equipe.getId())
+                .nomeEquipe(equipe.getNomeTime())
                 .mediaSentimentos(mediaEquipe)
                 .modaSentimento(modaSentimento)
                 .totalReports(sentimentosEquipe.size())
                 .sentimentosReportados(sentimentos)
                 .descritivo(descricoes)
                 .build();
-
-        System.out.println(dto.toString());
 
         equipeProducer.publishMessage(dto);
     }

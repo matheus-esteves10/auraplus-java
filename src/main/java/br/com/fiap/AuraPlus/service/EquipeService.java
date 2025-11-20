@@ -96,8 +96,6 @@ public class EquipeService {
 
         equipe.removerUsuario(usuarioRemocao);
         usuarioRepository.save(usuarioRemocao);
-
-        //todo: enviar email notificando que foi removido da equipe
     }
 
     public PageableEquipeResponse listarUsuariosDaEquipe(

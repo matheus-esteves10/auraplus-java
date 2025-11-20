@@ -4,7 +4,6 @@ import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioEquipeDto;
 import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioPessoaDto;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,62 +19,57 @@ public class IaService {
     public String processarRelatorioPessoa(final RelatorioPessoaDto dto) {
 
         var prompt = """
-                Você é um assistente especializado em análise de clima organizacional.
-                Gere um relatório motivacional, humano e profissional sobre um colaborador,
-                baseado nos dados abaixo. O relátorio não deve ser muito longo, mas deve ser completo e
-                abordar os principais pontos. Ele deve ser mandado em uma estrutura pronta para salvar no banco de dados já, 
-                o seu relatório será enviado diretamente para o colaborador.
+                Você é um assistente especializado em clima organizacional.
+                 Gere um relatório motivacional, humano e profissional sobre o colaborador, com base nos dados:
                 
-                Dados fornecidos:
-                - Número de reconhecimentos recebidos: %d
+                - Reconhecimentos recebidos: %d
                 - Títulos das indicações: %s
                 - Descrições das indicações: %s
                 
                 Instruções:
-                1. Estruture o relatório em pequenos parágrafos.
-                2. Destaque conquistas e comportamentos positivos citados pelos colegas.
-                3. Extraia padrões das descrições (ex.: colaboração, comunicação, liderança).
-                4. Mantenha um tom humano, acolhedor e motivacional.
-                5. Seja objetivo, evitando exageros e frases genéricas.
-                6. Produza um texto final pronto para ser enviado ao colaborador.
-                7. Não mencione números específicos ou detalhes que possam identificar os colegas que fizeram as indicações.
+                - Organize em pequenos parágrafos.
+                - Destaque conquistas e comportamentos positivos identificados nas indicações.
+                - Identifique padrões (ex.: colaboração, comunicação, liderança).
+                - Use tom acolhedor e motivacional, sem exageros.
+                - Gere um texto final direto, adequado para envio ao colaborador.
+                - Não mencione números específicos nem detalhes que possam identificar quem fez as indicações.
+                
+                Regra obrigatória:
+                - O resultado deve ser texto contínuo, natural e humano.
+                - Nunca retorne números soltos como “0.123” ou qualquer valor isolado.
+                - Não retorne listas numéricas.
                 """.formatted(
                 dto.numeroIndicacoes(),
                 dto.titulos(),
                 dto.descritivo());
 
-        String response = chatClient.prompt().user(prompt).call().content();
-        System.out.println(response);
-
-        // veja o que veio
-        return response;
+        return chatClient.prompt().user(prompt).call().content();
     }
 
     public String processarRelatorioEquipe(RelatorioEquipeDto dto) {
 
         var prompt = """
-                Você é um analista de clima e performance de equipes.
-                Com base nos dados a seguir, gere um relatório aprofundado, claro e profissional
-                sobre o estado atual da equipe.
+                Você é um analista de clima e performance. 
+                Gere um relatório claro, objetivo e profissional sobre a equipe usando os dados:
                 
-                Dados da equipe:
-                - Nome da equipe: %s
-                - Nota média dos sentimentos (1-5): %.2f
-                - Sentimento mais frequente (moda): %s
-                - Total de registros analisados: %d
+                - Nome: %s
+                - Nota média (1–5): %.2f
+                - Sentimento mais frequente: %s
+                - Total de registros: %d
                 - Sentimentos reportados: %s
-                - Descrições completas dos registros: %s
+                - Descrições completas: %s
                 
                 Instruções:
-                1. Comece descrevendo brevemente o humor geral da equipe.
-                2. Identifique padrões positivos e pontos fortes que aparecem nos registros.
-                3. Aponte pontos de atenção com base em sentimentos negativos, caso existam.
-                4. Apresente recomendações práticas e acionáveis para melhorar o ambiente.
-                5. Seja direto, evitando clichês e textos genéricos.
-                6. Estruture o relatório em seções curtas e bem organizadas.
-                7. Tome decisões com base nos dados, evitando suposições sem evidência.
-                8. Não cite críticas, nomes específicos ou detalhes sensíveis, coisas que possam identificar indivíduos,
-                gerar desconforto ou causar discordia na equipe.
+                - Resuma o humor geral da equipe.
+                - Destaque padrões positivos e pontos fortes.
+                - Aponte eventuais sinais de alerta.
+                - Dê recomendações práticas para melhorar o clima e colaboração.
+                - Seja conciso, sem clichês ou generalizações.
+                - Não inclua nomes, dados sensíveis ou críticas diretas.
+                
+                Regra obrigatória:
+                - O resultado deve ser texto contínuo, natural e humano.
+                - Não retorne números soltos, códigos, listas ou valores como “0.123”.
                 """.formatted(
                 dto.nomeEquipe(),
                 dto.mediaSentimentos(),
@@ -84,6 +78,6 @@ public class IaService {
                 dto.sentimentosReportados(),
                 dto.descritivo());
 
-        return null;
+        return chatClient.prompt().user(prompt).call().content();
     }
 }

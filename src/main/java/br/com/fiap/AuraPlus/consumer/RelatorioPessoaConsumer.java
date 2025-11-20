@@ -18,10 +18,15 @@ public class RelatorioPessoaConsumer {
         this.relatorioUsuarioService = relatorioUsuarioService;
     }
 
-    @RabbitListener(queues = "${broker.queue.relatorio.usuario}")
+    @RabbitListener(queues = "${broker.queue.relatorio.usuario}", concurrency = "1")
     public void receber(RelatorioPessoaDto dto) {
         final String retornoIa = iaService.processarRelatorioPessoa(dto);
         relatorioUsuarioService.saveRelatorioUsuario(dto, retornoIa);
 
+        try {
+            Thread.sleep(25_000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

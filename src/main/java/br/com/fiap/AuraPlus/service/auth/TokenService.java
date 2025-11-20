@@ -42,6 +42,7 @@ public class TokenService {
                 .withClaim("nome", user.getNome())
                 .withClaim("role", user.getRole().toString())
                 .withClaim("email", user.getEmail())
+                .withClaim("equipeId", user.getEquipe() != null ? user.getEquipe().getId() : null)
                 .withExpiresAt(Date.from(expiresAt))
                 .sign(algorithm);
     }
