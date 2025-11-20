@@ -26,7 +26,8 @@ public class RelatorioEquipe {
     @Column(name = "sentimento_medio", length = 100)
     private String sentimentoMedio;
 
-    @Column(length = 255)
+    @Lob
+    @Column()
     private String descritivo;
 
     @ManyToOne

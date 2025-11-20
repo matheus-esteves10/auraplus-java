@@ -2,19 +2,26 @@ package br.com.fiap.AuraPlus.service;
 
 import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioEquipeDto;
 import br.com.fiap.AuraPlus.dto.broker.producer.RelatorioPessoaDto;
-import org.springframework.ai.chat.model.ChatModel;
+import groq4j.builders.ChatCompletionRequestBuilder;
+import groq4j.services.ChatServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IaService {
 
-    private final ChatModel chatModel;
+    @Value("${spring.ai.openai.api-key}")
+    private String groqAiApiKey;
 
-    public IaService(ChatModel chatModel) {
-        this.chatModel = chatModel;
-    }
+    @Value("${spring.ai.openai.chat.options.model}")
+    private String model;
+
+    @Value("${spring.ai.openai.chat.options.temperature}")
+    private String temperature;
 
     public String processarRelatorioPessoa(final RelatorioPessoaDto dto) {
+
+        var chatService = ChatServiceImpl.create(groqAiApiKey);
 
         var prompt = """
                 Você é um assistente especializado em análise de clima organizacional.
@@ -39,7 +46,10 @@ public class IaService {
                 dto.titulos(),
                 dto.descritivo());
 
-        return chatModel.call(prompt);
+        var response = chatService.simple(model, prompt);
+
+        System.out.println(response.choices().getFirst().message().content().orElse("")); // veja o que veio
+        return response.choices().getFirst().message().content().orElse("");
     }
 
     public String processarRelatorioEquipe(RelatorioEquipeDto dto) {
@@ -75,6 +85,6 @@ public class IaService {
                 dto.sentimentosReportados(),
                 dto.descritivo());
 
-        return chatModel.call(prompt);
+        return null;
     }
 }

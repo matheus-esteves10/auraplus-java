@@ -26,7 +26,8 @@ public class RelatorioPessoa {
     @Column
     private LocalDateTime data = LocalDateTime.now();
 
-    @Column(length = 255)
+    @Lob
+    @Column()
     private String descritivo;
 
     @ManyToOne
