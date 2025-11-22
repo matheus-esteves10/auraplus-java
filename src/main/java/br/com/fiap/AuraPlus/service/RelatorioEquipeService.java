@@ -45,7 +45,9 @@ public class RelatorioEquipeService {
     @Cacheable(value = "relatoriosEquipe", key = "#equipeId + '-' + #mes + '-' + #ano")
     public RelatorioEquipeLeituraDto getRelatorioByEquipeAndMes(final Long equipeId, final int mes, final int ano) {
 
-        final RelatorioEquipe relatorio = relatorioEquipeRepository.findByEquipeAndMes(equipeId, mes, ano)
+        final RelatorioEquipe relatorio = relatorioEquipeRepository
+                .findByEquipeAndMes(equipeId, mes, ano)
+                .flatMap(lista -> lista.stream().findFirst())
                 .orElseThrow(() -> new RelatorioEquipeNotFoundException(mes, ano));
 
         return new RelatorioEquipeLeituraDto(

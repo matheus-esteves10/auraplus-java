@@ -14,7 +14,7 @@ public interface RelatorioPessoaRepository extends JpaRepository<RelatorioPessoa
             "WHERE r.usuario.id = :usuarioId " +
             "AND MONTH(r.data) = :mes " +
             "AND YEAR(r.data) = :ano")
-    Optional<RelatorioPessoa> findByUserAndMes(
+    Optional<List<RelatorioPessoa>> findByUserAndMes(
             @Param("usuarioId") Long usuarioId,
             @Param("mes") int mes,
             @Param("ano") int ano

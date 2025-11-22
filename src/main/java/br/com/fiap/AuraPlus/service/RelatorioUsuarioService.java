@@ -47,7 +47,9 @@ public class RelatorioUsuarioService {
     @Transactional(readOnly = true)
     @Cacheable(value = "relatoriosEquipe", key = "#usuarioId + '-' + #mes + '-' + #ano")
     public RelatorioUsuarioLeituraDto getRelatorioByUsuarioId(final Long usuarioId, final Integer mes, final Integer ano) {
-        final RelatorioPessoa relatorio = relatorioPessoaRepository.findByUserAndMes(usuarioId, mes, ano)
+        final RelatorioPessoa relatorio = relatorioPessoaRepository
+                .findByUserAndMes(usuarioId, mes, ano)
+                .flatMap(lista -> lista.stream().findFirst())
                 .orElseThrow(() -> new RelatorioUsuarioNotFoundException(mes, ano));
 
         return new RelatorioUsuarioLeituraDto(

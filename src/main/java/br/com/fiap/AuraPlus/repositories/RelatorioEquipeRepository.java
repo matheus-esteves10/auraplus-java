@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RelatorioEquipeRepository extends JpaRepository<RelatorioEquipe, Long> {
@@ -13,7 +14,7 @@ public interface RelatorioEquipeRepository extends JpaRepository<RelatorioEquipe
             "WHERE r.equipe.id = :equipeId " +
             "AND MONTH(r.data) = :mes " +
             "AND YEAR(r.data) = :ano")
-    Optional<RelatorioEquipe> findByEquipeAndMes(
+    Optional<List<RelatorioEquipe>> findByEquipeAndMes(
             @Param("equipeId") Long equipeId,
             @Param("mes") int mes,
             @Param("ano") int ano
