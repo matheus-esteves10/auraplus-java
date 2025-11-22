@@ -78,7 +78,8 @@ Ao final de cada mês, esses dados são enviados automaticamente para uma **IA g
 - ### 2. Na aplicação
 - Para executar os jobs automáticos assim que a aplicação 
 iniciar, descomente o método marcado com @PostConstruct 
-na classe RelatorioScheduler:
+na classe RelatorioScheduler
+
 -Na classe EnvioRelatorioService precisamos usar o método
 calcularPeriodoMensalTest(), pois ele considera o mes atual e não o 
 anterior (que é a ideia final). Isso é necessário para testes atualmente
@@ -99,4 +100,4 @@ flowchart LR
     E --> G[Relatório geral da equipe]
     F --> H[Armazenamento no banco]
     G --> H[Armazenamento no banco]
-    H --> I[Disponível para gestores]
+    H --> I[Disponível para gestores e colaboradores]
