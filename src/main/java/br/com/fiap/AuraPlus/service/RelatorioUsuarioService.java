@@ -45,7 +45,7 @@ public class RelatorioUsuarioService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "relatoriosEquipe", key = "#usuarioId + '-' + #mes + '-' + #ano")
+    @Cacheable(value = "relatoriosUsuario", key = "#usuarioId + '-' + #mes + '-' + #ano")
     public RelatorioUsuarioLeituraDto getRelatorioByUsuarioId(final Long usuarioId, final Integer mes, final Integer ano) {
         final RelatorioPessoa relatorio = relatorioPessoaRepository
                 .findByUserAndMes(usuarioId, mes, ano)
