@@ -1,8 +1,8 @@
--link do vídeo de apresentação:
+-link do vídeo de apresentação: https://youtu.be/0lj4ARBARRs
 
 -link do pitch:
 
--link do deploy:
+-link do deploy: https://auraplus-webapp.azurewebsites.net/swagger-ui/index.html
 
 # 🌟 AuraPlus — Plataforma Inteligente de Engajamento e Bem-Estar de Equipes
 
