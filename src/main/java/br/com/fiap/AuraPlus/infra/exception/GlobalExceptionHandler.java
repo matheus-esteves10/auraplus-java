@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class) // Generic handler for not anticipated exceptions
-    public ResponseEntity<Map<String, String>> handleGeneric(ApiException e) {
+    public ResponseEntity<Map<String, String>> handleGeneric(Exception e) {
         final var body = buildError(e);
 
         return ResponseEntity
