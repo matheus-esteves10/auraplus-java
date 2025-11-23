@@ -1,6 +1,6 @@
 -link do vídeo de apresentação: https://youtu.be/0lj4ARBARRs
 
--link do pitch:
+-link do pitch: https://youtu.be/ZYdFVQyqKrI
 
 -link do deploy: https://auraplus-webapp.azurewebsites.net/swagger-ui/index.html
 
